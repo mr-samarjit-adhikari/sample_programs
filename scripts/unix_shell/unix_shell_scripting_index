@@ -1,0 +1,32 @@
+# Shell Scripting 
+# Dated 25th May 2015
+
+----------------------------------------
+-     List of topics to be discussed.  -
+----------------------------------------
+
+1. What is a script? 
+    - sha-bang operator (Hello world program)
+
+2. Basics
+    - Variable and Parameters
+    - Variable assignment 
+    - Special variable type
+    - Positional parameter
+    
+3. Test Constructs
+    - Different method of writing 'test' 
+
+4. Loops and branches
+    - for loop construct
+    - while loop construct
+    - until loop construct
+
+5. Testing and branching (??Switch case??)
+    - Command line argument parsing
+
+6. World of function
+    - function syntax
+    - Indirect parameter passing
+    - Dereferencing actual arguments
+    - return value greater than 255
