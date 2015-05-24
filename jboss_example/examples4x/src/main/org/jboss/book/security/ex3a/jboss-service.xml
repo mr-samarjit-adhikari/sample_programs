@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- The clustered version of the SRP services
+-->
+<server>
+    <!-- The custom JAAS login configuration that installs
+         a Configuration capable of dynamically updating the
+         config settings
+    -->
+    <mbean code="org.jboss.book.security.service.SecurityConfig"
+           name="jboss.docs.security:service=LoginConfig-EX3a">
+        <attribute name="AuthConfig">META-INF/login-config.xml</attribute>
+        <attribute name="SecurityConfigName">jboss.security:service=XMLLoginConfig</attribute>
+    </mbean>
+    
+    <!-- A service that establishes a distributed CachePolicy using the indicated
+         cluster partition state replication capabilities.
+    -->
+    <mbean code="org.jboss.book.security.ex3a.service.DistributedCacheService"
+           name="jboss.docs.security:service=SRPDistributedCache">
+        <attribute name="PartitionName">DefaultPartition</attribute>
+        <attribute name="CacheJndiName">srp-test/SRPDistributedCache</attribute>
+        <attribute name="CacheTimeout">600</attribute>
+        <depends>jboss:service=DefaultPartition</depends>
+    </mbean>
+    
+    <!-- The SRP service that provides the SRP RMI server and server side
+         authentication cache -->
+    <mbean code="org.jboss.security.srp.SRPService"
+           name="jboss.docs.security:service=SRPServiceHA">
+        <attribute name="VerifierSourceJndiName">srp-test/security-ex3</attribute>
+        <attribute name="JndiName">srp-test/SRPServerInterface</attribute>
+        <attribute name="AuthenticationCacheJndiName">srp-test/SRPDistributedCache</attribute>
+        <attribute name="ServerPort">0</attribute>
+        <depends>jboss.docs.security:service=PropertiesVerifierStore</depends>
+        <depends>jboss.docs.security:service=SRPDistributedCache</depends>
+    </mbean>
+    
+    <!-- The SRP store handler service that provides the user password verifier
+         information -->
+    <mbean code="org.jboss.book.security.ex3.service.PropertiesVerifierStore"
+           name="jboss.docs.security:service=PropertiesVerifierStore">
+        <attribute name="JndiName">srp-test/security-ex3</attribute>
+    </mbean>
+    
+    <!-- Expose the SRP service interface via clustered HTTP -->
+    <mbean code="org.jboss.invocation.http.server.HttpProxyFactoryHA"
+           name="jboss.docs.security:service=SRP/HA-HTTP">
+        <!-- The SRP service we are proxying -->
+        <attribute name="InvokerName">jboss.docs.security:service=SRPServiceHA</attribute>
+        <!-- Compose the invoker URL from the cluster node address -->
+        <attribute name="InvokerURLPrefix">http://</attribute>
+        <attribute name="InvokerURLSuffix">:8080/invoker/SRPInvokerHAServlet</attribute>
+        <attribute name="UseHostName">false</attribute>
+        <attribute name="ExportedInterface">org.jboss.security.srp.SRPRemoteServerInterface</attribute>
+        <!-- The proxy will be available under this JNDI name -->
+        <attribute name="JndiName">srp-test/SRPServerInterfaceHA</attribute>
+        <!-- SRP is stateful and so the load balance policy must be sticky -->
+        <attribute name="LoadBalancePolicy">org.jboss.ha.framework.interfaces.FirstAvailable</attribute>
+        <attribute name="PartitionName">DefaultPartition</attribute>
+    </mbean>
+</server>

@@ -1,0 +1,278 @@
+<project name="security chapter examples" default="build-all">
+    <property name="src.root"    value="src/main/org/jboss/book/security"/>
+    <property name="chapter.dir" value="${build.dir}/security"/>
+
+    <path id="chapter.path">
+        <pathelement location="src/main"/>
+        <pathelement path="${client.path}"/>
+    </path>
+
+    <target name="prepare">
+        <mkdir dir="${chapter.dir}"/>
+    </target>
+
+    <target name="config">
+        <!-- Setup a custom config for the ex3a examples -->
+        <echo message="Preparing security-ex3a configuration fileset"/>
+        <copy todir="${jboss.dist}/server/security-ex3a">
+            <fileset dir="${jboss.dist}/server/all">
+                <exclude name="db/**"/>
+                <exclude name="log/**"/>
+                <exclude name="tmp/**"/>
+            </fileset>
+        </copy>
+        <!-- Setup a custom config for the ex3b examples -->
+        <echo message="Preparing security-ex3b configuration fileset"/>
+        <copy todir="${jboss.dist}/server/security-ex3b">
+            <fileset dir="${jboss.dist}/server/all">
+                <exclude name="db/**"/>
+                <exclude name="log/**"/>
+                <exclude name="tmp/**"/>
+            </fileset>
+        </copy>
+        <copy file="${src.root}/ex3b/http-invoker-service.xml" overwrite="true" tofile="${jboss.dist}/server/security-ex3b/deploy/http-invoker.sar/META-INF/jboss-service.xml"/>
+        <copy file="${src.root}/ex3b/web.xml" overwrite="true" todir="${jboss.dist}/server/security-ex3b/deploy/http-invoker.sar/invoker.war/WEB-INF"/>
+        <replace file="${jboss.dist}/server/security-ex3b/deploy/jbossweb.sar/META-INF/jboss-service.xml">
+            <replacetoken><![CDATA[<mbean code="org.jboss.jetty.JettyService" name="jboss.web:service=JBossWeb">]]></replacetoken>
+            <replacevalue><![CDATA[<mbean code="org.jboss.jetty.JettyService" name="jboss.web:service=JBossWeb">
+    <depends>jboss:service=DefaultPartition</depends>]]></replacevalue>
+        </replace>
+    </target>
+
+    <target name="build-all">
+        <antcall target="security-ex1-jar"/>
+        <antcall target="security-ex2-jar"/>
+        <antcall target="security-ex3-jar"/>
+        <antcall target="security-ex3a-jar"/>
+        <antcall target="security-ex3b-jar"/>
+        <antcall target="security-ex4-jar"/>
+    </target>
+
+    <target name="security-ex1-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/security-ex1.sar">
+            <metainf dir="${src.root}/ex1" includes="jboss-service.xml"/>
+            <metainf dir="${src.root}" includes="login-config.xml"/>
+            <fileset dir="${build.classes.dir}" includes="org/jboss/book/security/service/*"/>
+        </jar>
+    </target>
+
+    <target name="security-ex1-jar" depends="security-ex1-sar">
+        <jar jarfile="${chapter.dir}/security-ex1.jar">
+            <metainf dir="${src.root}/ex1" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}" includes="org/jboss/book/security/ex1/*" excludes="org/jboss/book/security/ex1/ExClient.class"/>
+            <fileset dir="${src.root}/ex1" includes="*.properties"/>
+            <fileset dir="${chapter.dir}" includes="security-ex1.sar"/>
+        </jar>
+    </target>
+
+    <target name="security-ex2-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/security-ex2.sar">
+            <metainf dir="${src.root}/ex2" includes="jboss-service.xml"/>
+            <metainf dir="${src.root}" includes="login-config.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/security/service/*"/>
+                <include name="org/jboss/book/security/ex2/service/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="security-ex2-jar" depends="security-ex2-sar">
+        <jar jarfile="${chapter.dir}/security-ex2.jar">
+            <metainf dir="${src.root}/ex2" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/security/ex2/*"/>
+                <exclude name="org/jboss/book/security/ex1/ExClient.class"/>
+            </fileset>
+            <fileset dir="${chapter.dir}" includes="security-ex2.sar"/>
+        </jar>
+    </target>
+
+    <target name="security-ex3-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/security-ex3.sar">
+            <metainf dir="${src.root}/ex3" includes="jboss-service.xml"/>
+            <metainf dir="${src.root}" includes="login-config.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/security/service/*"/>
+                <include name="org/jboss/book/security/ex3/service/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="security-ex3-jar" depends="security-ex3-sar">
+        <jar jarfile="${chapter.dir}/security-ex3.jar">
+            <metainf dir="${src.root}/ex3" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}" includes="org/jboss/book/security/ex3/*" excludes="org/jboss/book/security/ex3/ExClient*"/>
+            <fileset dir="${src.root}/ex3" includes="*.properties"/>
+            <fileset dir="${chapter.dir}" includes="security-ex3.sar"/>
+        </jar>
+    </target>
+
+    <target name="security-ex3a-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/security-ex3a.sar">
+            <metainf dir="${src.root}/ex3a" includes="jboss-service.xml"/>
+            <metainf dir="${src.root}" includes="login-config.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/security/service/*"/>
+                <include name="org/jboss/book/security/ex3/service/*"/>
+                <include name="org/jboss/book/security/ex3a/service/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="security-ex3a-jar" depends="security-ex3a-sar">
+        <jar jarfile="${chapter.dir}/security-ex3a.jar">
+            <metainf dir="${src.root}/ex3a" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}"
+                includes="org/jboss/book/security/ex3a/*" excludes="org/jboss/book/security/ex3a/ExClient*"/>
+            <fileset dir="${src.root}/ex3a" includes="*.properties"/>
+            <fileset dir="${chapter.dir}" includes="security-ex3a.sar"/>
+        </jar>
+    </target>
+
+    <target name="security-ex3b-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/security-ex3b.sar">
+            <metainf dir="${src.root}/ex3b" includes="jboss-service.xml"/>
+            <metainf dir="${src.root}" includes="login-config.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/security/service/*"/>
+                <include name="org/jboss/book/security/ex3/service/*"/>
+                <include name="org/jboss/book/security/ex3a/service/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="security-ex3b-jar" depends="security-ex3b-sar">
+        <jar jarfile="${chapter.dir}/security-ex3b.jar">
+            <metainf dir="${src.root}/ex3a" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}"
+                includes="org/jboss/book/security/ex3a/*" excludes="org/jboss/book/security/ex3a/ExClient*"/>
+            <fileset dir="${src.root}/ex3a" includes="*.properties"/>
+            <fileset dir="${chapter.dir}" includes="security-ex3b.sar"/>
+        </jar>
+    </target>
+
+    <target name="security-ex4-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/security-ex4.sar">
+            <metainf dir="${src.root}/ex4" includes="jboss-service.xml"/>
+            <fileset dir="${src.root}">
+                <include name="example.keystore"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="security-ex4-jar" depends="security-ex4-sar">
+        <jar jarfile="${chapter.dir}/security-ex4.jar">
+            <metainf dir="${src.root}/ex4" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/security/ex4/*"/>
+                <exclude name="org/jboss/book/security/ex4/ExClient.class"/>
+                <exclude name="org/jboss/book/security/ex4/JSSE_install_check.class"/>
+            </fileset>
+            <fileset dir="${chapter.dir}" includes="security-ex4.sar"/>
+        </jar>
+    </target>
+
+    <!-- Examples -->
+
+    <target name="run-example1" depends="security-ex1-jar">
+        <copy file="${chapter.dir}/security-ex1.jar" 
+              todir="${jboss.deploy.dir}" overwrite="true" />
+        <echo message="Waiting for 5 seconds for deploy..." />
+        <sleep seconds="5" />
+        <java classname="org.jboss.book.security.ex1.ExClient"
+              classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager" />
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+        </java>
+    </target>
+
+ 
+    <target name="run-example2" depends="security-ex2-jar">
+        <copy file="${chapter.dir}/security-ex2.jar" todir="${jboss.deploy.dir}" overwrite="true"/>
+        <echo message="Waiting for 5 seconds for deploy..."/>
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.security.ex2.ExClient"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djava.security.auth.login.config=${src.resources}/auth.conf"/>
+            <arg value="jduke"/>
+            <arg value="theduke"/>
+        </java>
+    </target>
+    <target name="run-example3" depends="security-ex3-jar">
+        <copy file="${chapter.dir}/security-ex3.jar" todir="${jboss.deploy.dir}" overwrite="true"/>
+        <echo message="Waiting for 5 seconds for deploy..."/>
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.security.ex3.ExClient"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djava.security.auth.login.config=${src.resources}/auth.conf"/>
+            <arg value="jduke"/>
+            <arg value="theduke"/>
+        </java>
+    </target>
+    <target name="run-example3a" depends="security-ex3a-jar">
+        <echo message="The ${chapter.dir}/security-ex3a.jar must have been deployed to the cluster"/>
+        <java classname="org.jboss.book.security.ex3a.ExClient"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djava.security.auth.login.config=${src.resources}/auth.conf"/>
+            <arg value="jduke"/>
+            <arg value="theduke"/>
+        </java>
+    </target>
+    <target name="run-example3b" depends="security-ex3b-jar">
+        <echo message="The ${chapter.dir}/security-ex3b.jar must have been deployed to the cluster and -c security-ex3b"/>
+        <java classname="org.jboss.book.security.ex3b.ExClient"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djava.security.auth.login.config=${src.resources}/auth.conf"/>
+            <arg value="jduke"/>
+            <arg value="theduke"/>
+        </java>
+    </target>
+    <target name="run-example3bro">
+        <echo message="The ${chapter.dir}/security-ex3b.jar must have been deployed to the cluster and -c security-ex3b"/>
+        <java classname="org.jboss.book.security.ex3b.TstReadOnly"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djava.security.auth.login.config=${src.resources}/auth.conf"/>
+        </java>
+    </target>
+    <target name="run-example4a" depends="security-ex4-jar">
+        <echo message="Testing JSSE availablility"/>
+        <java classname="org.jboss.book.security.ex4.JSSE_install_check"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djavax.net.debug=all"/>
+        </java>
+    </target>
+    <target name="run-example4b" depends="security-ex4-jar">
+        <copy file="${chapter.dir}/security-ex4.jar" todir="${jboss.deploy.dir}" overwrite="true"/>
+        <echo message="Waiting for 15 seconds for deploy..."/>
+        <sleep seconds="15"/>
+        <java classname="org.jboss.book.security.ex4.ExClient"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djavax.net.debug=trustmanager"/>
+        </java>
+    </target>
+    <target name="run-example4" depends="security-ex4-jar">
+        <copy file="${chapter.dir}/security-ex4.jar" todir="${jboss.deploy.dir}" overwrite="true"/>
+        <echo message="Waiting for 5 seconds for deploy..."/>
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.security.ex4.ExClient"
+            classpathref="chapter.path" fork="true">
+            <jvmarg value="-Djava.security.manager"/>
+            <jvmarg value="-Djava.security.policy=${src.resources}/app.policy"/>
+            <jvmarg value="-Djavax.net.ssl.trustStore=${src.root}/example.keystore"/>
+        </java>
+    </target>
+</project>

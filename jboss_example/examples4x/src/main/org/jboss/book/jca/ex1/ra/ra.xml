@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+                        http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd" version="1.5">
+    <display-name>File System Adapter</display-name>
+    <vendor-name>JBoss</vendor-name>
+    <eis-type>FileSystem</eis-type>
+    <resourceadapter-version>1.0</resourceadapter-version>
+    <license>
+        <description>LGPL</description>
+        <license-required>false</license-required>
+    </license>
+    <resourceadapter>
+        
+        <resourceadapter-class>org.jboss.resource.deployment.DummyResourceAdapter</resourceadapter-class>
+            <outbound-resourceadapter>
+            <connection-definition>
+                <managedconnectionfactory-class>
+                    org.jboss.book.jca.ex1.ra.FSManagedConnectionFactory
+                </managedconnectionfactory-class>
+                <config-property>
+                    <config-property-name>FileSystemRootDir</config-property-name>
+                    <config-property-type>java.lang.String</config-property-type>
+                    <config-property-value>/tmp/db/fs_store</config-property-value>
+                </config-property>
+                <config-property>
+                    <config-property-name>UserName</config-property-name>
+                    <config-property-type>java.lang.String</config-property-type>
+                    <config-property-value/>
+                </config-property>
+                <config-property>
+                    <config-property-name>Password</config-property-name>
+                    <config-property-type>java.lang.String</config-property-type>
+                    <config-property-value/>
+                </config-property>
+                <connectionfactory-interface>
+                    org.jboss.book.jca.ex1.ra.DirContextFactory </connectionfactory-interface>
+                <connectionfactory-impl-class>
+                    org.jboss.book.jca.ex1.ra.DirContextFactoryImpl </connectionfactory-impl-class>
+                <connection-interface> javax.naming.directory.DirContext </connection-interface>
+                <connection-impl-class> org.jboss.book.jca.ex1.ra.FSDirContext </connection-impl-class>
+            </connection-definition>
+            <transaction-support>NoTransaction</transaction-support>
+            <authentication-mechanism>
+                <authentication-mechanism-type>BasicPassword</authentication-mechanism-type>
+                <credential-interface>javax.resource.spi.security.PasswordCredential</credential-interface>
+            </authentication-mechanism>
+            <reauthentication-support>true</reauthentication-support>
+        </outbound-resourceadapter>
+        <security-permission>
+            <description> Read/Write access is required to the contents of the
+                FileSystemRootDir </description>
+            <security-permission-spec> permission java.io.FilePermission
+                "/tmp/db/fs_store/*", "read,write"; </security-permission-spec>
+        </security-permission>
+    </resourceadapter>
+</connector>

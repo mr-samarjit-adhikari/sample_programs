@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server>
+  <mbean code="org.jboss.book.jmx.ex3.EjbMBeanAdaptor" 
+         name="jboss.book:service=EjbMBeanAdaptor">
+    <attribute name="HelloPrefix">AdaptorPrefix</attribute>
+    <attribute name="EjbJndiName">local/chap2.EchoBean</attribute>
+     <depends>jboss.j2ee:service=EJB,jndiName=local/chap2.EchoBean</depends>
+     <depends>jboss.j2ee:service=EJB,jndiName=local/Chap2EchoInfoBean</depends>
+  </mbean>
+</server>

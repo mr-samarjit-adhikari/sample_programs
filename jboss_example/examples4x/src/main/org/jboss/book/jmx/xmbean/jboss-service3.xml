@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--DOCTYPE server
+    PUBLIC "-//JBoss//DTD MBean Service 3.2//EN"
+    "http://www.jboss.org/j2ee/dtd/jboss-service_3_2.dtd"
+
+This instance goes beyond the jboss-service_3_2.dtd model
+due to its use of the embedded <interceptors> element in the
+ClientInterceptors attribute of the JRMPProxyFactory config.
+-->
+
+<server>
+    <mbean code="org.jboss.book.jmx.xmbean.InvokeJNDIMap"
+           name="chap2.xmbean:service=JNDIMap,version=3"
+           xmbean-dd="META-INF/jndimap-xmbean3.xml">
+        <depends>jboss:service=Naming</depends>
+    </mbean>
+    
+    <!-- The JRMP invoker proxy configuration for the naming service -->
+    <mbean code="org.jboss.invocation.jrmp.server.JRMPProxyFactory"
+           name="jboss.test:service=proxyFactory,type=jrmp,target=JNDIMap">
+        <!-- Use the standard JRMPInvoker from conf/jboss-service.xml -->
+        <attribute name="InvokerName">jboss:service=invoker,type=jrmp</attribute>
+        <attribute name="TargetName">chap2.xmbean:service=JNDIMap,version=3</attribute>
+        <attribute name="JndiName">secure-xmbean/ClientInterface</attribute>
+        <attribute name="ExportedInterface">org.jboss.book.jmx.xmbean.ClientInterface</attribute>
+
+        <!-- <attribute name="InvokeTargetMethod">true</attribute> -->
+        
+        <attribute name="ClientInterceptors">
+            <iterceptors>
+                <interceptor>org.jboss.proxy.ClientMethodInterceptor</interceptor>
+                <interceptor>org.jboss.proxy.SecurityInterceptor</interceptor>
+                <interceptor>org.jboss.jmx.connector.invoker.client.InvokerAdaptorClientInterceptor</interceptor>
+                <interceptor>org.jboss.invocation.InvokerInterceptor</interceptor>
+            </iterceptors>
+        </attribute>
+        <depends>jboss:service=invoker,type=jrmp</depends>
+        <depends>chap2.xmbean:service=JNDIMap,version=3</depends>
+    </mbean>
+</server>

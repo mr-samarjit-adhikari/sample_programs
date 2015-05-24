@@ -1,0 +1,38 @@
+Question 1 - Infinite Improbability Drive
+
+
+
+The Infinite Improbability Drive is a wonderful new method of crossing interstellar distances in a few seconds; without all that tedious mucking about in hyperspace.
+
+As the Improbability Drive reaches infinite improbability, it passes through every conceivable point in every conceivable universe almost simultaneously.
+
+In other words, you're never sure where you'll end up or even what species you'll be when you get there.
+
+The starship Heart of Gold was the first spacecraft to make use of the Infinite Improbability Drive. The craft was stolen by then-President Zaphod Beeblebrox at the official launch of the ship, as he was supposed to be officiating the launch
+
+Even faster than light, the Infinite Improbability Drive allows The Heart of Gold to go anywhere, no matter how improbable.
+
+To function optimally, the Improbability Drive needs to find out total number of arrangements of the prime factors of the distance that it needs to travel. Since this calculation of non-trivial and needs to be calculated in a fraction of time, Zaphod Beeblebrox the Forth has signed up your services to provide an algorithm that can provide this result.
+
+Yes, you need more than just 2 heads and 3 hands to crack this one!
+Description
+
+Every integer greater than 1 can be uniquely represented as a product of one or more primes. Several arrangements of the primer factors may be possible. We will ignore all the factors that include 1 since it is not a primer number.
+
+For example
+4   2*2     f(4) = 1
+6   2*3, 3*2    f(6) = 2
+8   2*2*2   f(8) = 1
+14  2*7, 7*2    f(14) = 2
+Input
+
+The input would consist of at most 10000 test cases, each on a separate line. Each test case is a positive integer i<2 63. This input would be provided on standard input. The inputs would consist of multiple test cases, terminated by EOF.
+Output
+
+
+The expected output needs to contain the input number n followed by the smallest number k such that f(k)=n separated by a space. So if input was 1, the k would be 4 since f(4)=1, smallest value of k is 4.
+Sample Input    Sample Output
+1   1 4
+2   2 6
+3   3 12
+

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<jboss>
+    <security-domain>java:/jaas/security-ex2</security-domain>
+</jboss>

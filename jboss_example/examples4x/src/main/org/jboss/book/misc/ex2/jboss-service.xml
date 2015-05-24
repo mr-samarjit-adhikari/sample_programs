@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>    
+    <mbean code="org.jboss.varia.scheduler.Scheduler"
+           name="jboss.docs:service=Scheduler">
+        <attribute name="StartAtStartup">true</attribute>
+        <attribute name="SchedulableClass">org.jboss.book.misc.ex2.ExSchedulable</attribute>
+        <attribute name="SchedulableArguments">TheName,123456789</attribute>
+        <attribute name="SchedulableArgumentTypes">java.lang.String,long</attribute>
+        <attribute name="InitialStartDate">NOW</attribute>
+        <attribute name="SchedulePeriod">60000</attribute>
+        <attribute name="InitialRepetitions">-1</attribute>
+    </mbean>
+</server>

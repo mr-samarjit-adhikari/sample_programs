@@ -1,0 +1,45 @@
+Political parties in Bengal show their muscle by calling for regular bandhs (strikes), which cause considerable economic damage. For our purposes, each party may be characterized 
+by a positive integer b called the bandh parameter that denotes the average number of days between two successive strikes called by the given party. 
+
+Consider three political parties. Assume b1 = 3, b2 = 4, and b3 = 8, where bi is the bandh parameter for party i. We can simulate the behavior of these three parties for N = 14 
+days. We always start the simulation on a Monday. There are no bandhs on either Saturdays or Sundays. 
+
+            1   2   3   4   5   6   7   8   9   10  11  12  13  14
+    Days    Mo  Tu  We  Th  Fr  Sa  Su  Mo  Tu  We  Th  Fr  Sa  Su
+    Party 1         X           X           X           X       
+    Party 2             X               X               X       
+    Party 3                             X                       
+    Bandhs          1   2               3   4           5       
+
+    There will be exactly five bandhs (on days 3, 4, 8, 9, and 12) over the 14 days. There is no bandh on day 6 since it falls on Saturday. Hence we lose five working days in two 
+    weeks. Given the bandh parameters for several political parties and the value of N, determine the number of working days lost in those N days. 
+
+    Input 
+    The first line of the input consists of a single integer T giving the number of test cases to follow. The first line of each test case contains an integer N (7 ≤ N ≤ 365,000), 
+    giving the number of days over which the simulation must be run. The next line contains another integer P (1 ≤ P ≤ 100) representing the number of political parties. The ith 
+    of the next P lines contains a positive integer bi (which will never be a multiple of 7) giving the bandh parameter for party i (1 ≤ i ≤ P).  
+    The sample input below has 2 test cases. The first test case has 14 days and 3 parties with bandh parameters 3, 4, 8. 
+    The second test case has 100 days and 4 parties with bandh parameters 12, 15, 25, 40.
+
+    Output 
+    For each test case, output the number of working days lost on a separate line. In the sample output below, 5 is the working days lost for test case 1 and 15  
+    is the working days lost for test case 2.
+
+    Sample Input
+    2 
+    14 
+    3
+    3 
+    4 
+    8 
+    100
+    4
+    12 
+    15 
+    25 
+    40 
+
+    Sample Output
+    5
+    15
+

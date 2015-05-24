@@ -1,0 +1,258 @@
+<!-- Build script for the chapter 2 examples -->
+<project name="Chapter 2 build" default="build-all">
+    
+    <property name="src.root"    value="src/main/org/jboss/book/jmx" />
+    <property name="chapter.dir" value="${build.dir}/jmx" />
+    <property name="chapter.ex"  value="jmx-ex${ex}" />
+
+    <path id="chapter.path">
+        <pathelement location="src/main"/>
+        <pathelement path="${client.path}" />
+        <pathelement location="${jboss.dist}/lib/jboss-jmx.jar"/>
+        <pathelement location="${jboss.dist}/client/jbossall-client.jar" />
+        <pathelement location="${jboss.dist}/lib/dom4j.jar" />
+    </path>
+    
+    <target name="build-all">
+        <antcall target="jmx-ex0-jars" />
+        <antcall target="jmx-ex1-sar" />
+        <antcall target="jmx-ex1xmbean1-sar" />
+        <antcall target="jmx-ex1xmbean2-sar" />
+        <antcall target="jmx-ex1xmbean3-sar" />
+        <antcall target="jmx-ex2-sar" />
+        <antcall target="jmx-ex3-ear" />
+        <antcall target="rmic" />
+    </target>
+    
+    <target name="rmic">
+        <rmic base="${build.classes.dir}" classpathref="chapter.path"
+              includes="org/jboss/book/jmx/xmbean/TestXMBean1$*.class"/>
+    </target>
+    
+    <target name="prepare">
+        <mkdir dir="${chapter.dir}" />
+    </target>
+    
+    <target name="config">
+    </target>
+    
+    <target name="jmx-ex0-jars" depends="prepare">
+        <jar jarfile="${chapter.dir}/j0.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/jmx/ex0/ExCtx.class" />
+                <include name="org/jboss/book/jmx/ex0/ExObj*.class" />
+            </fileset>
+        </jar>
+        <jar jarfile="${chapter.dir}/j1.jar">
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/jmx/ex0/ExCtx.class" />
+                <include name="org/jboss/book/jmx/ex0/ExObj*.class" />
+            </fileset>
+        </jar>
+    </target>
+    
+    <target name="jmx-ex1-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/jmx-ex1.sar">
+            <metainf dir="${src.root}/ex1" includes="*.xml"/>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/ex1/**"
+                     />
+        </jar>
+    </target>
+    
+    <!-- The JNDIMap XMBean version 1 -->
+    <target name="jmx-ex1xmbean1-sar" depends="prepare">
+        <zip destfile="${chapter.dir}/jmx-ex1xmbean1.sar">
+            <zipfileset dir="${src.root}/xmbean" prefix="META-INF">
+                <include name="jboss-service.xml"/>
+            </zipfileset>
+            <zipfileset dir="${src.root}/xmbean" fullpath="META-INF/jndimap-xmbean.xml">
+                <include name="jndimap-xmbean1.xml"/>
+            </zipfileset>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/xmbean/**"
+                     />
+        </zip>
+    </target>
+    
+    <!-- The JNDIMap XMBean version 2 -->
+    <target name="jmx-ex1xmbean2-sar" depends="prepare">
+        <zip destfile="${chapter.dir}/jmx-ex1xmbean2.sar">
+            <zipfileset dir="${src.root}/xmbean" fullpath="META-INF/jboss-service.xml">
+                <include name="jboss-service2.xml"/>
+            </zipfileset>
+            <zipfileset dir="${src.root}/xmbean" fullpath="META-INF/jndimap-xmbean.xml">
+                <include name="jndimap-xmbean2.xml"/>
+            </zipfileset>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/xmbean/**"
+                     />
+        </zip>
+    </target>
+    
+    <!-- The JNDIMap XMBean version 3 -->
+    <target name="jmx-ex1xmbean3-sar" depends="prepare">
+        <zip destfile="${chapter.dir}/jmx-ex1xmbean3.sar">
+            <zipfileset dir="${src.root}/xmbean"
+                        fullpath="META-INF/jboss-service.xml">
+                <include name="jboss-service3.xml"/>
+            </zipfileset>
+            <zipfileset dir="${src.root}/xmbean" prefix="META-INF">
+                <include name="jndimap-xmbean3.xml"/>
+            </zipfileset>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/xmbean/**"
+                     />
+        </zip>
+    </target>
+    
+    <target name="jmx-ex2-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/jmx-ex2.sar">
+            <metainf dir="${src.root}/ex2" includes="*.xml"/>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/ex2/**"
+                     />
+        </jar>
+    </target>
+    
+    <target name="jmx-ex3-ear" depends="prepare">
+        <jar jarfile="${chapter.dir}/jmx-ex3.sar">
+            <metainf dir="${src.root}/ex3" includes="jboss-service.xml"/>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/ex3/EjbMBeanAdaptor.class"
+                     />
+        </jar>
+        <jar jarfile="${chapter.dir}/jmx-ex3.jar">
+            <metainf dir="${src.root}/ex3" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jmx/ex3/Echo*.class"
+                     />
+        </jar>
+        <ear earfile="${chapter.dir}/jmx-ex3.ear"
+             appxml="${src.root}/ex3/application.xml">
+            <metainf dir="${src.root}/ex3">
+                <include name="jboss-app.xml" />
+            </metainf>
+            <fileset dir="${chapter.dir}">
+                <include name="jmx-ex3.jar" />
+                <include name="jmx-ex3.sar" />
+            </fileset>
+        </ear>
+    </target>
+    
+    <!-- The targets for running the examples -->
+    <target name="run-example0b" depends="jmx-ex0-jars">
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExCtx.class" />
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExObj.class" />
+        <java classname="org.jboss.book.jmx.ex0.ExCCEb" fork="true">
+            <classpath refid="chapter.path" />
+            <sysproperty key="chapter.dir" value="${chapter.dir}"/>
+            <sysproperty key="chapter.ex" value="${chapter.ex}" />
+        </java>
+    </target>
+    
+    <target name="run-example0c" depends="jmx-ex0-jars">
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExCtx.class" />
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExObj.class" />
+        <java classname="org.jboss.book.jmx.ex0.ExCCEc" fork="true">
+            <classpath refid="chapter.path" />
+            <sysproperty key="chapter.dir" value="${chapter.dir}"/>
+            <sysproperty key="chapter.ex" value="${chapter.ex}" />
+        </java>
+    </target>
+    
+    <target name="run-example0d" depends="jmx-ex0-jars">
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExCtx.class" />
+        <java classname="org.jboss.book.jmx.ex0.ExIAEd" fork="true">
+            <classpath refid="chapter.path" />
+            <sysproperty key="chapter.dir" value="${chapter.dir}"/>
+            <sysproperty key="chapter.ex" value="${chapter.ex}" />
+        </java>
+    </target>
+    
+    <target name="run-example0e" depends="jmx-ex0-jars">
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExCtx.class" />
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExObj.class" />
+        <delete file="${build.classes.dir}/org/jboss/book/jmx/ex0/ExObj2.class" />
+        <java classname="org.jboss.book.jmx.ex0.ExLE" fork="true">
+            <classpath refid="chapter.path" />
+            <sysproperty key="chapter.dir" value="${chapter.dir}"/>
+            <sysproperty key="chapter.ex" value="${chapter.ex}" />
+        </java>
+    </target>
+    
+    <target name="run-example1">
+        <java classname="org.jboss.book.jmx.ex1.TestMySubclass" fork="true">
+            <classpath refid="chapter.path" />
+            <classpath>
+
+            </classpath>
+        </java>
+    </target>
+ 
+      <target name="run-example2">
+        <java classname="org.jboss.book.jmx.ex2.TestJNDIMapEx2" fork="true">
+            <classpath refid="chapter.path" />
+            <classpath>
+
+            </classpath>
+        </java>
+    </target>
+ 
+     <target name="run-example1JNDIMap">
+        <java classname="org.jboss.book.jmx.ex1.TestJNDIMapEx1" fork="true">
+            <classpath refid="chapter.path" />
+            <classpath>
+
+            </classpath>
+        </java>
+    </target>
+ 
+   
+    <target name="run-examplexmbean1" depends="rmic,jmx-ex1xmbean1-sar">
+        <copy file="${chapter.dir}/jmx-ex1xmbean1.sar" todir="${jboss.deploy.dir}" />
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.jmx.xmbean.TestXMBean1" fork="true">
+            <classpath refid="chapter.path" />
+        </java>
+    </target>
+    <target name="run-examplexmbean2" depends="rmic,jmx-ex1xmbean2-sar">
+        <delete file="${jboss.deploy.dir}/jmx-ex1xmbean1.sar" />
+        <copy file="${chapter.dir}/jmx-ex1xmbean2.sar" todir="${jboss.deploy.dir}" />
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.jmx.xmbean.TestXMBean1" fork="true">
+            <classpath refid="chapter.path" />
+        </java>
+    </target>
+    <target name="run-examplexmbean2a" depends="rmic,jmx-ex1xmbean2-sar">
+        <copy file="${chapter.dir}/jmx-ex1xmbean2.sar" todir="${jboss.deploy.dir}"
+              overwrite="true" />
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.jmx.xmbean.TestXMBeanRestart" fork="true">
+            <classpath refid="chapter.path" />
+        </java>
+    </target>
+    <target name="run-examplexmbean3" depends="rmic,jmx-ex1xmbean3-sar">
+        <copy file="${chapter.dir}/jmx-ex1xmbean3.sar" todir="${jboss.deploy.dir}" />
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.jmx.xmbean.TestXMBean3" fork="true">
+            <classpath refid="chapter.path" />
+        </java>
+    </target>
+    
+    <target name="run-example3" depends="jmx-ex3-ear">
+        <copy file="${chapter.dir}/jmx-ex3.ear" todir="${jboss.deploy.dir}"
+              overwrite="true" />
+    </target>
+    
+    <target name="run-example4">
+        <property name="cp" refid="chapter.path" />
+        <java classname="org.jboss.book.jmx.ex4.JMXBrowser" fork="true">
+            <classpath refid="chapter.path" />
+            <classpath>
+                <pathelement location="${jboss.dist}/client/jbossall-client.jar" />
+                <pathelement location="${jboss.dist}/lib/dom4j.jar" />
+            </classpath>
+        </java>
+    </target>
+</project>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mbean PUBLIC
+   "-//JBoss//DTD JBOSS XMBEAN 1.0//EN"
+   "http://www.jboss.org/j2ee/dtd/jboss_xmbean_1_0.dtd"
+[
+   <!ATTLIST interceptor adminName CDATA #IMPLIED>
+]
+>
+
+<mbean>
+    <description>The JNDIMap XMBean Example Version 3</description>
+    
+    <descriptors>
+        
+        <interceptors>
+            <interceptor code="org.jboss.book.jmx.xmbean.ServerSecurityInterceptor"
+                         adminName="admin"/>
+            <interceptor code="org.jboss.book.jmx.xmbean.InvokerInterceptor" />
+
+            <interceptor code="org.jboss.mx.interceptor.PersistenceInterceptor2" />
+            <interceptor code="org.jboss.mx.interceptor.ModelMBeanInterceptor" />
+            <interceptor code="org.jboss.mx.interceptor.ObjectReferenceInterceptor" />
+ 
+        </interceptors>
+        
+        <persistence persistPolicy="Never" />
+        <currencyTimeLimit value="10" />
+    </descriptors>
+
+    <class>org.jboss.test.jmx.xmbean.InvokeJNDIMap</class>
+
+    <constructor>
+        <description>The default constructor</description>
+        <name>JNDIMap</name>
+    </constructor>
+    
+    <!-- Attributes -->
+    <attribute access="read-write" getMethod="getJndiName" setMethod="setJndiName">
+        <description>The location in JNDI where the Map we manage will be bound</description>
+        <name>JndiName</name>
+        <type>java.lang.String</type>
+        <descriptors>
+            <value value="inmemory/maps/MapTest" />
+        </descriptors>
+    </attribute>
+
+    <attribute access="read-write" getMethod="getInitialValues" setMethod="setInitialValues">
+        <description>The array of initial values that will be placed into
+        the map associated with the service. The array is a collection of
+        key,value pairs with elements[0,2,4,...2n] being the keys and
+        elements [1,3,5,...,2n+1] the associated values</description>
+        <name>InitialValues</name>
+        <type>[Ljava.lang.String;</type>
+        <descriptors>
+            <value value="key0,value0" />
+        </descriptors>
+    </attribute>
+    
+    <!-- Operations -->
+    <operation>
+        <description>The start lifecycle operation</description>
+        <name>start</name>
+    </operation>
+    <operation>
+        <description>The stop lifecycle operation</description>
+        <name>stop</name>
+    </operation>
+    <operation impact="ACTION">
+        <description>Put a value into the nap</description>
+        <name>put</name>
+        <parameter>
+            <description>The key the value will be store under</description>
+            <name>key</name>
+            <type>java.lang.Object</type>
+        </parameter>
+        <parameter>
+            <description>The value to place into the map</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+        </parameter>
+    </operation>
+    <operation impact="INFO">
+        <description>Get a value from the map</description>
+        <name>get</name>
+        <parameter>
+            <description>The key to lookup in the map</description>
+            <name>get</name>
+            <type>java.lang.Object</type>
+        </parameter>
+        <return-type>java.lang.Object</return-type>
+    </operation>
+
+    <operation impact="INFO">
+        <description>The detached invoker invoke(Invocation) entry point</description>
+        <name>invoke</name>
+        <parameter>
+            <description>The Invocation representation</description>
+            <name>invocation</name>
+            <type>org.jboss.invocation.Invocation</type>
+        </parameter>
+        <return-type>java.lang.Object</return-type>
+    </operation>
+    
+    <!-- Notifications -->
+    <notification>
+        <description>The notification sent whenever a value is get into the map
+        managed by the service</description>
+        <name>javax.management.Notification</name>
+        <notification-type>org.jboss.book.jmx.xmbean.JNDIMap.get</notification-type>
+    </notification>
+    <notification>
+        <description>The notification sent whenever a value is put into the map
+        managed by the service</description>
+        <name>javax.management.Notification</name>
+        <notification-type>org.jboss.book.jmx.xmbean.JNDIMap.put</notification-type>
+    </notification>
+</mbean>

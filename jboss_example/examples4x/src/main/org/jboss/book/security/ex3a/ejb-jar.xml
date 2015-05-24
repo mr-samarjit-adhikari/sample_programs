@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+                         "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+
+<ejb-jar>
+    <enterprise-beans>
+        <session>
+            <ejb-name>EchoBean3a</ejb-name>
+            <home>org.jboss.book.security.ex3a.EchoHome</home>
+            <remote>org.jboss.book.security.ex3a.Echo</remote>
+            <ejb-class>org.jboss.book.security.ex3a.EchoBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+        </session>
+    </enterprise-beans>
+    
+    <assembly-descriptor>
+        <security-role>
+            <role-name>Echo</role-name>
+        </security-role>
+        
+        <method-permission>
+            <role-name>Echo</role-name>
+            
+            <method>
+                <ejb-name>EchoBean3a</ejb-name>
+                <method-name>*</method-name>
+            </method>
+        </method-permission>
+    </assembly-descriptor>
+</ejb-jar>

@@ -1,0 +1,70 @@
+<project name="misc examples build" default="build-all">
+    <property name="src.root" value="src/main/org/jboss/book/misc" />
+    <property name="chapter.dir" value="${build.dir}/misc"/>
+    
+    <path id="chapter.path">
+        <pathelement location="src/main" />
+        <pathelement location="output/classes" />
+        <pathelement path="${client.path}" />
+    </path>
+       
+    <target name="prepare">
+        <mkdir dir="${chapter.dir}"/>
+    </target>
+    
+    <target name="build-all">
+        <antcall target="misc-ex2-sar" />
+    </target>
+    
+    <target name="config">
+        
+    </target>
+
+    <target name="misc-ex2-sar" depends="prepare">
+        <jar jarfile="${chapter.dir}/misc-ex2.sar">
+            <metainf dir="${src.root}/ex2" includes="jboss-service.xml"/>
+            <fileset dir="${build.classes.dir}">
+                <include name="org/jboss/book/misc/ex2/*" />
+            </fileset>
+        </jar>
+    </target>
+    <!-- Examples -->
+    
+    <target name="run-example1">
+        <!-- Create a copy of default as jboss0 -->
+        <echo message="Preparing jboss0 configuration fileset"/>
+        <mkdir dir="${jboss.dist}/server/jboss0"/>
+        <copy todir="${jboss.dist}/server/jboss0">
+            <fileset dir="${jboss.dist}/server/default">
+                <exclude name="data/**"/>
+                <exclude name="deploy/chap*"/>
+                <exclude name="log/**"/>
+                <exclude name="tmp/**"/>
+            </fileset>
+        </copy>
+        <copy todir="${jboss.dist}/server/jboss0/conf" overwrite="true"
+              file="${src.root}/ex1/jboss-service.xml"/>
+        <copy todir="${jboss.dist}/server/"
+              file="${src.resources}/misc-ex1-bindings.xml"/>
+        
+        <echo message="Preparing jboss1 configuration fileset"/>
+        <mkdir dir="${jboss.dist}/server/jboss1"/>
+        <copy todir="${jboss.dist}/server/jboss1">
+            <fileset dir="${jboss.dist}/server/jboss0">
+                <exclude name="data/**"/>
+                <exclude name="log/**"/>
+                <exclude name="tmp/**"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="run-example2" depends="misc-ex2-sar">
+        <copy file="${chapter.dir}/misc-ex2.sar" todir="${jboss.deploy.dir}"
+              overwrite="true" />
+    </target>
+    
+    <target name="run-examplebind">
+        <java classname="org.jboss.book.misc.jndibind.Lookup"
+              classpathref="chapter.path" fork="true" />
+    </target>
+</project>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE server PUBLIC
+          "-//JBoss//DTD MBean Service 3.2//EN"
+          "http://www.jboss.org/j2ee/dtd/jboss-service_3_2.dtd">
+
+<server>
+    <mbean code="org.jboss.book.jmx.xmbean.JNDIMap" name="chap2.xmbean:service=JNDIMap"
+           xmbean-dd="META-INF/jndimap-xmbean.xml">
+        <attribute name="JndiName">inmemory/maps/MapTest</attribute>
+        <depends>jboss:service=Naming</depends>
+    </mbean>
+</server>

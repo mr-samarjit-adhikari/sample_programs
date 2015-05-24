@@ -1,0 +1,54 @@
+<?xml version='1.0'?>
+<!DOCTYPE policy PUBLIC
+      "-//JBoss//DTD JBOSS Security Config 3.0//EN"
+      "http://www.jboss.org/j2ee/dtd/security_config.dtd">
+
+<!-- The JAAS login configuration file for the java:/jaas/security-ex1
+security domain used by the security-spec test case
+-->
+<policy>
+    <application-policy name="security-ex1">
+        <authentication>
+            <login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule"
+                          flag="required">
+                <module-option name="unauthenticatedIdentity">anonymous</module-option>
+            </login-module>
+        </authentication>
+    </application-policy>
+    
+    <application-policy name="security-ex2">
+        <authentication>
+            <login-module code="org.jboss.book.security.ex2.JndiUserAndPass"
+                          flag="required">
+                <module-option name="userPathPrefix">/security/store/password</module-option>
+                <module-option name="rolesPathPrefix">/security/store/roles</module-option>
+            </login-module>
+        </authentication>
+    </application-policy>
+    
+    <application-policy name="security-ex3">
+        <authentication>
+            <login-module code="org.jboss.security.srp.jaas.SRPCacheLoginModule"
+                          flag="required">
+                <module-option name="cacheJndiName">srp-test/AuthenticationCache</module-option>
+            </login-module>
+            <login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule"
+                          flag="required">
+                <module-option name="password-stacking">useFirstPass</module-option>
+            </login-module>
+        </authentication>
+    </application-policy>
+    
+    <application-policy name="security-ex3a">
+        <authentication>
+            <login-module code="org.jboss.security.srp.jaas.SRPCacheLoginModule"
+                          flag="required">
+                <module-option name="cacheJndiName">srp-test/SRPDistributedCache</module-option>
+            </login-module>
+            <login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule"
+                          flag="required">
+                <module-option name="password-stacking">useFirstPass</module-option>
+            </login-module>
+        </authentication>
+    </application-policy>
+</policy>

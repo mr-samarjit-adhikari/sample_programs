@@ -1,0 +1,211 @@
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<strong><a class="header-link navbar-brand" href="http://15.146.156.230/">R&amp;D Codewars 2014</a></strong>
+		</div>
+		<div class="collapse navbar-collapse">
+
+			
+			<ul class="nav navbar-nav">
+									<li><a href="http://15.146.156.230/user/%7Busername%7D/submit">Submissions</a></li>
+							</ul>
+			
+
+			<ul class="nav navbar-nav navbar-right">
+
+							<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>&nbsp; Team-Akshay_Samarjit <b class="caret"></b></a>
+
+					<ul class="dropdown-menu">
+						
+						<li><a href="http://15.146.156.230/account/change-password">Change Password</a></li>
+
+						<li><a href="http://15.146.156.230/account/sign-out">Sign Out</a></li>						
+					</ul>
+				</li>
+				<!-- <li><a class="header-link" href="http://15.146.156.230/account/sign-out">Sign Out</a></li> -->
+							
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+
+	
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="shortcut icon" href="http://15.146.156.230/assets/ico/favicon.ico">
+		<title>R&amp;D CodeWars 2014</title>
+		<!-- Bootstrap core CSS -->
+		<link media="all" type="text/css" rel="stylesheet" href="R&amp;D%20CodeWars%202014_problem2_files/bootstrap.css">
+
+
+        <link media="all" type="text/css" rel="stylesheet" href="R&amp;D%20CodeWars%202014_problem2_files/sticky-footer-navbar.css">
+
+
+
+        <link media="all" type="text/css" rel="stylesheet" href="R&amp;D%20CodeWars%202014_problem2_files/styles.css">
+
+	
+	
+		
+		
+		<!-- Begin page content -->
+		
+			
+				
+
+
+<!-- <div class="container">
+	<h2 class="text-center">Hi , Please check this space for prelims!</h2>
+</div> -->
+<div class="container">
+		<div class="col-lg-12">
+		<div class="q-blk">
+			<div class="q-title">Question 2 - Restaurant at the end of the universe</div>
+		</div>
+		<div class="q-content">
+			<div class="intro-content">
+				<p>The History of every major Galactic Civilization tends to pass 
+through three distinct and recognizable phases, those of Survival, 
+Inquiry and Sophistication, otherwise known as the How, Why, and Where 
+phases. </p>
+				<p>For instance, the first phase is characterized by the question 
+'How can we eat?' the second by the question 'Why do we eat?' and the 
+third by the question 'Where shall we have lunch? </p>
+				<p> We decide to go to the Restaurant at the End of Universe. On 
+arriving there we find that the place is temporarily out of order. As we
+ look around for the problem, we find that Chefs at The Restaurant at 
+the End of Universe have extremely challenging jobs.  </p>
+				<p>Apart from offering the great spectacle of the universe blowing 
+itself up, it also offers a guarantee of maximizing your taste for a 
+particular serving if you order the chef’s special.</p>
+			</div>
+			
+			<div class="text-center">
+				<img src="R&amp;D%20CodeWars%202014_problem2_files/img2.png" alt="" width="500px">
+			</div>
+			
+			<div class="q-desc">
+				<h2>Background</h2>
+				<p>The restaurant offers two types of dishes, dishes like roasted 
+potatoes, dumplings, hotdogs which are discrete dishes, i.e. you can eat
+ them in integral numbers.</p>
+				<p>You can’t have them in fraction. The other types of dishes are 
+like mashed potato, drinks, sauces etc. which are continuous dishes and 
+you can have any arbitrary amount of them.</p>
+				<p class="text-center math-form">
+					Tastiness<sub>Discrete</sub> = <sup>N</sup>Σ<sub>n=1</sub> (t<sub>i</sub> - (n-1)Δt<sub>i</sub>) <br><br>
+					Tastiness<sub>Continuous</sub> = <sub>0</sub>∫<sup>x</sup> (t<sub>i</sub> - xΔt<sub>i</sub>)dx
+				</p>
+				<p>Total tastiness of the dish served to you is the summation of 
+total tastiness of its components. Also since anti-particles are not 
+edible, total weight of a dish is the sum of total weight of its 
+components.</p>
+			</div>
+			
+				<h2>Input</h2>
+				<p>The input consists of a single test case which consists of multiple lines.</p>
+				<ol>
+					<li>
+						<p>The first line consists of two integers d and w (1 ≤ d ≤ 250; 1
+ ≤ w ≤ 10000). d is the number of components in the serving and w is the
+ total weight of the serving in centigrams.</p>
+					</li>
+					<li>
+						<p>After the first line, we have d lines where each line describes a component. <br><br>
+							<b>a.</b> If the input is of the form D w<sub>i</sub>t<sub>i</sub>Δt<sub>i</sub> then it is a discrete dish where each item weighs w<sub>i</sub>grams with initial tastiness t<sub>i</sub> and decay of tastiness Δ<sub>i</sub> <br><br>
+							<b>b.</b>	If the input is of the form C t<sub>i</sub>  Δt<sub>i</sub> then it is a continuous dish with initial tastiness t<sub>i</sub> and decay of tastiness Δt<sub>i</sub>
+						</p>
+					</li>
+					<li>
+						<p>	The numbers 1 ≤ w<sub>i</sub> ≤ 10000; 0 ≤ t<sub>i</sub> ; Δt<sub>i</sub> ≤ 10000</p>
+					</li>
+				</ol>
+
+
+
+				<h2>Output</h2>
+				<p>We need to calculate the serving with maximum possible tastiness 
+of a weight w. If it is impossible to make a meal of total weight 
+exactly w based on available dishes, display impossible.</p>
+				<p>The output should contain the maximum tastiness of the serving.</p>
+				<table class="table text-center table-bordered">
+					<thead>
+						<tr>
+							<td>Sample Input</td>
+							<td>Sample Output</td>
+						</tr>
+					</thead>
+			      	<tbody>
+				        <tr>
+				          <td>2 15</td>
+				          <td>40.500000000</td>
+				        </tr>
+			        	<tr>
+				          <td>D 4 10 1	<br>C 6 1</td>
+				          <td></td>
+			        	</tr>
+				        <tr>
+				          	<td>2 19 <br>D 4 5 1 <br>D 6 3 2</td>
+				          	<td>Impossible</td>
+				        </tr>
+			      </tbody>
+			    </table>
+
+
+			</div>
+		</div>
+
+					<div class="col-lg-12 blk-content upload-blk" style="margin-top:40px; margin-bottom:20px;">
+				<div class="answer-header">Submit your Answers</div>
+				<div class="alert well"><b><i>NOTE:</i></b> You have only <b>1</b> attempt to upload your solution, please be carefull before submitting. You are not allowed to submit it again!!!</div>
+			<form method="POST" action="http://15.146.156.230/user/%7Busername%7D/submit" accept-charset="UTF-8" enctype="multipart/form-data"><input name="_token" value="dXZSxREaLYhxvjpuyCfoxTd6gKiQ9wxFj1flX7DR" type="hidden">
+				<input name="_token" value="dXZSxREaLYhxvjpuyCfoxTd6gKiQ9wxFj1flX7DR" type="hidden">
+
+				<div class="input-lg"><input name="file" type="file"></div>
+				<div class="btn btn-primary pull-right" name="uploadbtn" value="Upload"><input value="Upload" type="submit"></div>
+			</form>
+			</div>
+		</div>
+	
+		<footer id="footer">
+			<div class="container">
+				<p class="pull-left">© R&amp;D CodeWars 2014 &nbsp; &nbsp;<a href="mailto:codewarcommandos@hp.com">Help</a> </p>
+
+				<div class="pull-right">
+					Developed By- <strong><a href="mailto:saini@hpcom">Aakanksha Saini</a></strong> &amp;<strong> <a href="mailto:anshuman.singh2@hp.com">Anshuman Singh</a></strong>
+				</div>
+			</div>
+		</footer>
+			<!-- Bootstrap core JavaScript
+			================================================== -->
+			<!-- Placed at the end of the document so the pages load faster -->
+		<script src="R&amp;D%20CodeWars%202014_problem2_files/jquery.js"></script>
+
+        <script src="R&amp;D%20CodeWars%202014_problem2_files/bootstrap.js"></script>
+
+        <script src="R&amp;D%20CodeWars%202014_problem2_files/bind-polyfill.js"></script>
+
+        <script src="R&amp;D%20CodeWars%202014_problem2_files/smooth-scroll.js"></script>
+
+
+        <script src="R&amp;D%20CodeWars%202014_problem2_files/main.js"></script>
+
+
+        <script>
+        	smoothScroll.init();
+        </script>
+	
+</body></html>

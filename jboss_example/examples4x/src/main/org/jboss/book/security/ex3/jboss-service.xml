@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+    <!-- The custom JAAS login configuration that installs 
+         a Configuration capable of dynamically updating the
+         config settings
+    -->
+    <mbean code="org.jboss.book.security.service.SecurityConfig"
+           name="jboss.docs.security:service=LoginConfig-EX3">
+        <attribute name="AuthConfig">META-INF/login-config.xml</attribute>
+        <attribute name="SecurityConfigName">jboss.security:service=XMLLoginConfig</attribute>
+    </mbean>
+    
+    <!-- The SRP service that provides the SRP RMI server and server side
+         authentication cache -->
+    <mbean code="org.jboss.security.srp.SRPService"
+           name="jboss.docs.security:service=SRPService">
+        <attribute name="VerifierSourceJndiName">srp-test/security-ex3</attribute>
+        <attribute name="JndiName">srp-test/SRPServerInterface</attribute>
+        <attribute name="AuthenticationCacheJndiName">srp-test/AuthenticationCache</attribute>
+        <attribute name="AuthenticationCacheTimeout">10</attribute>
+        <attribute name="AuthenticationCacheResolution">5</attribute>
+        <attribute name="ServerPort">0</attribute>
+        <depends>jboss.docs.security:service=PropertiesVerifierStore</depends>
+    </mbean>
+    
+    <!-- The SRP store handler service that provides the user password verifier
+         information -->
+    <mbean code="org.jboss.book.security.ex3.service.PropertiesVerifierStore"
+           name="jboss.docs.security:service=PropertiesVerifierStore">
+        <attribute name="JndiName">srp-test/security-ex3</attribute>
+    </mbean>
+</server>

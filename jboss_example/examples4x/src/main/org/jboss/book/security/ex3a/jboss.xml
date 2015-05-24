@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<jboss>
+    <security-domain>java:/jaas/security-ex3a</security-domain>
+
+    <container-configurations>
+        <!-- A custom container configuration for HA-RMI/HTTP -->
+        <container-configuration extends="Clustered Stateless SessionBean">
+            <container-name>HA HTTP Stateless SessionBean</container-name>
+            <home-invoker>jboss:service=invoker,type=httpHA</home-invoker>
+            <bean-invoker>jboss:service=invoker,type=httpHA</bean-invoker>
+        </container-configuration>
+    </container-configurations>
+    
+    <enterprise-beans>
+        <session>
+            <ejb-name>EchoBean3a</ejb-name>
+            <configuration-name>HA HTTP Stateless SessionBean</configuration-name>
+        </session>
+    </enterprise-beans>
+</jboss>

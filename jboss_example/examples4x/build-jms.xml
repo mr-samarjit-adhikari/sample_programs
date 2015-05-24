@@ -1,0 +1,98 @@
+<project name="JMS Chapter Examples" default="build-all">
+   <property name="src.root" value="src/main/org/jboss/book/jms" />
+   <property name="chapter.dir" value="${build.dir}/jms" />
+   <property name="chapter.ex" value="jms-ex${ex}" />
+
+   <path id="chapter.path">
+       <pathelement location="src/main" />
+       <pathelement location="output/classes" />
+       <pathelement path="${client.path}" />
+   </path>
+   
+   <target name="prepare">
+       <mkdir dir="${chapter.dir}" />
+   </target>
+   
+   <target name="jms-ex2-jar" depends="prepare">
+       <jar jarfile="${chapter.dir}/jms-ex2.jar">
+           <metainf dir="${src.root}/ex2" includes="*.xml"/>
+           <fileset dir="${build.classes.dir}" includes="org/jboss/book/jms/ex2/**"/>
+       </jar>
+   </target>
+   <target name="jms-ex3-jar" depends="prepare">
+       <jar jarfile="${chapter.dir}/jms-ex3.jar">
+           <metainf dir="${src.root}/ex3" includes="*.xml"/>
+           <fileset dir="${build.classes.dir}" includes="org/jboss/book/jms/ex3/**"/>
+       </jar>
+   </target>
+   
+   <target name="build-all">
+       <antcall target="jms-ex2-jar" />
+   </target>
+   
+   <target name="run-example1p2p">
+       <java classname="org.jboss.book.jms.ex1.SendRecvClient"
+             classpathref="chapter.path" fork="true" />
+   </target>
+   
+   <target name="run-example1p2pex">
+       <java classname="org.jboss.book.jms.ex1.SendRecvExListenerClient"
+             classpathref="chapter.path" fork="true" />
+   </target>
+   
+   <target name="run-example1p2psecure">
+       <java classname="org.jboss.book.jms.ex1.SecureSendRecvClient"
+             classpathref="chapter.path" fork="true" />
+   </target>
+   <target name="run-example1ps">
+      <java classname="org.jboss.book.jms.ex1.TopicSendRecvClient"
+         classpathref="chapter.path" fork="true" />
+   </target>
+   <target name="run-example1ps2">
+      <java classname="org.jboss.book.jms.ex1.TopicSendClient"
+         classpathref="chapter.path" fork="true" />
+
+      <java classname="org.jboss.book.jms.ex1.TopicRecvClient"
+         classpathref="chapter.path" fork="true" />
+   </target>
+
+   <target name="run-example1psdt">
+      <java classname="org.jboss.book.jms.ex1.DurableTopicSetup"
+         classpathref="chapter.path" fork="true" />
+      <java classname="org.jboss.book.jms.ex1.TopicSendClient"
+         classpathref="chapter.path" fork="true" />
+      <java classname="org.jboss.book.jms.ex1.DurableTopicRecvClient"
+         classpathref="chapter.path" fork="true" />
+   </target>
+   <target name="run-example1dt">
+      <java classname="org.jboss.book.jms.ex1.DurableTopicClient"
+         classpathref="chapter.path" fork="true" />
+   </target>
+
+   <target name="run-example2" depends="jms-ex2-jar">
+      <copy file="${chapter.dir}/jms-ex2.jar" todir="${jboss.deploy.dir}"
+         overwrite="true" />
+      <echo message="Waiting 5 seconds for deploy..." />
+      <sleep seconds="5"/>
+      <java classname="org.jboss.book.jms.ex2.SendRecvClient"
+         classpathref="chapter.path" fork="true" />
+   </target>
+   <target name="run-example2np">
+      <copy file="${chapter.dir}/jms-ex2.jar" todir="${jboss.deploy.dir}"
+         overwrite="true" />
+      <echo message="Waiting 5 seconds for deploy..." />
+      <sleep seconds="5"/>
+      <java classname="org.jboss.book.jms.ex2.SendRecvClientNP"
+         classpathref="chapter.path" fork="true">
+      </java>
+   </target>
+   <target name="run-example3" depends="jms-ex3-jar">
+      <copy file="${chapter.dir}/jms-ex3.jar" todir="${jboss.deploy.dir}"
+         overwrite="true" />
+      <echo message="Waiting 5 seconds for deploy..." />
+      <sleep seconds="5"/>
+      <java classname="org.jboss.book.jms.ex3.SendRecvClient"
+         classpathref="chapter.path" fork="true" />
+   </target>
+
+</project>

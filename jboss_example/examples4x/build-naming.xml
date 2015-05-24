@@ -1,0 +1,45 @@
+<!-- Build script for the chapter 3 examples -->
+<project name="Chapter 3 build" default="build-all">
+    <property name="src.root" value="src/main/org/jboss/naming" />
+    <property name="chapter.dir" value="${build.dir}/naming" />
+    
+    <target name="build-all" depends="prepare" />
+    
+    <target name="prepare">
+    </target>
+    
+    <target name="config">
+        <echo message="Preparing naming configuration fileset" />
+        <mkdir dir="${jboss.dist}/server/naming" />
+        <copy todir="${jboss.dist}/server/naming">
+            <fileset dir="${jboss.dist}/server/default">
+                <exclude name="data/**"/>
+                <exclude name="log/**"/>
+                <exclude name="tmp/**"/>
+            </fileset>
+        </copy>
+        <copy file="${src.root}/../chap8/chap8.keystore" overwrite="true"
+              todir="${jboss.dist}/server/naming/conf" />
+<!-- already has keystore
+        <copy file="${src.root}/jboss-service.xml" overwrite="true"
+              todir="${jboss.dist}/server/naming/conf" />
+-->
+        <copy file="${src.root}/server.xml" overwrite="true"
+              tofile="${jboss.dist}/server/naming/deploy/jbossweb-tomcat55.sar/server.xml" />
+        <copy file="${src.root}/invoker-service.xml" overwrite="true"
+              tofile="${jboss.dist}/server/naming/deploy/http-invoker.sar/META-INF/jboss-service.xml" />
+        <copy file="${src.root}/invoker-web.xml" overwrite="true"
+              tofile="${jboss.dist}/server/naming/deploy/http-invoker.sar/invoker.war/WEB-INF/web.xml" />
+    </target>
+    
+   <target name="run-example1">
+      <java classname="org.jboss.naming.ex1.ExClient" fork="true">
+         <classpath>
+            <pathelement path="${client.path}" />
+            <pathelement location="${jboss.dist}/lib/jboss-jmx.jar"/>
+         </classpath>
+         <jvmarg value="-Djavax.net.ssl.trustStore=${jboss.dist}/server/naming/conf/chap8.keystore" />
+         <jvmarg value="-Dorg.jboss.security.ignoreHttpsHost=true" />
+      </java>
+   </target>
+</project>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE server>
+<!-- $Id: http-invoker-service.xml,v 1.1 2012/07/19 13:59:34 rhs041163 Exp $ -->
+
+<server>
+
+  <!-- The HTTP invoker service configration
+  -->
+  <mbean code="org.jboss.invocation.http.server.HttpInvoker"
+    name="jboss:service=invoker,type=http">
+     <attribute name="InvokerURLPrefix">http://</attribute>
+     <attribute name="InvokerURLSuffix">:8080/invoker/restricted/JMXInvokerHAServlet</attribute>
+     <attribute name="UseHostName">false</attribute>
+  </mbean>
+
+  <mbean code="org.jboss.invocation.http.server.HttpInvokerHA"
+    name="jboss:service=invoker,type=httpHA">
+     <attribute name="InvokerURLPrefix">http://</attribute>
+     <attribute name="InvokerURLSuffix">:8080/invoker/EJBInvokerHAServlet</attribute>
+     <attribute name="UseHostName">false</attribute>
+  </mbean>
+
+   <!-- Expose the HAJNDI service interface via clustered HTTP. This maps
+   to the ReadOnlyJNDIFactoryHA servlet URL
+   -->
+   <mbean code="org.jboss.invocation.http.server.HttpProxyFactoryHA"
+      name="jboss:service=invoker,type=httpHA,target=HAJNDI,readonly=true">
+      <depends>jboss:service=HAJNDI</depends>
+      <attribute name="InvokerName">jboss:service=HAJNDI</attribute>
+      <attribute name="InvokerURLPrefix">http://</attribute>
+      <attribute name="InvokerURLSuffix">:8080/invoker/readonly/JMXInvokerHAServlet</attribute>
+      <attribute name="UseHostName">false</attribute>
+      <attribute name="ExportedInterface">org.jnp.interfaces.Naming</attribute>
+      <attribute name="JndiName"></attribute>
+      <attribute name="LoadBalancePolicy">org.jboss.ha.framework.interfaces.FirstAvailable</attribute>
+      <attribute name="PartitionName">DefaultPartition</attribute>
+   </mbean>
+   <!-- Expose the HAJNDI service interface via clustered HTTP. This maps
+   to the secured HAJNDIFactory servlet URL
+   -->
+   <mbean code="org.jboss.invocation.http.server.HttpProxyFactoryHA"
+      name="jboss:service=invoker,type=httpHA,target=HAJNDI,restricted=true">
+      <depends>jboss:service=HAJNDI</depends>
+      <attribute name="InvokerName">jboss:service=HAJNDI</attribute>
+      <attribute name="InvokerURLPrefix">http://</attribute>
+      <attribute name="InvokerURLSuffix">:8080/invoker/restricted/JMXInvokerHAServlet</attribute>
+      <attribute name="UseHostName">false</attribute>
+      <attribute name="ExportedInterface">org.jnp.interfaces.Naming</attribute>
+      <attribute name="JndiName"></attribute>
+      <attribute name="LoadBalancePolicy">org.jboss.ha.framework.interfaces.FirstAvailable</attribute>
+      <attribute name="PartitionName">DefaultPartition</attribute>
+   </mbean>
+</server>

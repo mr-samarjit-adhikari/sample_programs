@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<jboss>
+    <security-domain>java:/jaas/security-ex1</security-domain>
+    
+    <enterprise-beans>
+        <session>
+            <ejb-name>EchoBean</ejb-name>
+            <jndi-name>security.EchoBean</jndi-name>
+            <security-proxy>org.jboss.book.security.ex1.EchoSecurityProxy</security-proxy>
+        </session>
+    </enterprise-beans>
+</jboss>

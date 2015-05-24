@@ -1,0 +1,52 @@
+Actual Question:
+
+Background
+
+You are done with the meals and now there is the time to pay for it. Like everything else, restaurant at the end of universe has a funny way to return the change.
+
+Restaurant at the end of universe uses its own currency which is called asiap. These coins are all fractions. You have coins with three denominations. ¼ asiap, ½ asiap and 4 asiap.
+
+Also the restaurant will always return the same number of coins as the amount it needs to return. For example, if you need to be returned 20 paisa, it will give you 20 coins. Also you will always be returned atleast one coin of each type.
+
+ 
+
+The inputs would be provided on standard input and will be terminated by end of file. The output for each test case should terminate with “===” string.
+
+Input
+
+The input would consist of a list of numbers, each on one lines. Each line is a single test case. Each line denotes one instance of change to be returned.
+
+Output
+
+The output would look like
+
+Case n:
+
+    n coins of 4 asiap each
+    m coins of 1/2 asiap each
+    o coins of 1/4 asiap each
+
+Please have a look at the table below for input and output file samples
+
+Sample Input
+    
+
+Sample Output
+
+10
+    
+
+Case 10:
+
+20
+    
+
+No Solution found
+===
+Case 20:
+3 coins of 4 asiap each
+15 coins of 1/2 asiap each
+2 coins of 1/4 asiap each
+===
+
+ 

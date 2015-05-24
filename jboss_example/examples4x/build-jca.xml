@@ -1,0 +1,54 @@
+<project name="JCA chapter examples" default="build-all">
+
+    <property name="src.root" value="src/main/org/jboss/book/jca" />
+    <property name="chapter.dir" value="${build.dir}/jca" />
+    
+    <target name="prepare">
+        <mkdir dir="${chapter.dir}" />
+    </target>
+    
+    <target name="build-all">
+        <antcall target="jca-ex1-rar" />
+        <antcall target="jca-ex1-jar" />
+    </target>
+    
+    <target name="config">
+        <copy file="${chapter.dir}/jca-ex1.rar" todir="${jboss.deploy.dir}"
+              overwrite="true" />
+        <copy file="${src.root}/ex1/notxfs-ds.xml" todir="${jboss.deploy.dir}"
+              overwrite="true" />
+    </target>
+    
+    <target name="jca-ex1-rar" depends="prepare">
+        <jar jarfile="${chapter.dir}/ra.jar">
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jca/ex1/ra/**"  />
+        </jar>
+        <jar jarfile="${chapter.dir}/jca-ex1.rar">
+            <metainf dir="${src.root}/ex1/ra" includes="ra.xml"/>
+            <fileset dir="${chapter.dir}"
+                     includes="ra.jar"  />
+        </jar>
+    </target>
+    <target name="jca-ex1-jar" depends="prepare">
+        <jar jarfile="${chapter.dir}/jca-ex1.jar">
+            <metainf dir="${src.root}/ex1" includes="ejb-jar.xml,jboss.xml"/>
+            <fileset dir="${build.classes.dir}"
+                     includes="org/jboss/book/jca/ex1/*"
+                     excludes="org/jboss/book/jca/ex1/ExClient.class" />
+        </jar>
+    </target>
+    
+    <!-- Examples -->
+    
+    <target name="run-example1" depends="jca-ex1-jar">
+        <copy file="${chapter.dir}/jca-ex1.jar" todir="${jboss.deploy.dir}"
+              overwrite="true" />
+        <echo message="Waiting for deploy..." />
+        <sleep seconds="5"/>
+        <java classname="org.jboss.book.jca.ex1.ExClient"
+              classpath="${client.path}" fork="true" >
+        </java>
+    </target>
+    
+</project>

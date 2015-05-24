@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<jboss>
+   <enterprise-beans>
+      <session>
+         <ejb-name>EchoBean</ejb-name>
+         <resource-ref>
+            <res-ref-name>ra/DirContextFactory</res-ref-name>
+            <jndi-name>java:/NoTransFS</jndi-name>
+         </resource-ref>
+      </session>
+   </enterprise-beans>
+</jboss>

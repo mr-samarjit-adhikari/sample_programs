@@ -1,0 +1,7 @@
+<server>
+    <mbean code="org.jboss.book.jmx.ex1.JNDIMap" name="chap2.ex1:service=JNDIMap">
+        <attribute name="JndiName">inmemory/maps/MapTest</attribute>
+        <attribute name="InitialValues">key0,value0</attribute>
+        <depends>jboss:service=Naming</depends>
+    </mbean>
+</server>
