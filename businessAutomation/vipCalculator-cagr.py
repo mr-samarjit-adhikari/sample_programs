@@ -23,31 +23,31 @@ class vipInvestment:
         try:
             self.navFile = open(self.navFileName)
         except IOError as error:
-            print error
+            print (error)
             sys.exit(1)
 
     def __printHdr(self):
         """
         Internal function tp print table Header.
         """
-        print "NAV\t ValueAvg\t  SharedOwn\t  SharedBrought\t    CurrInvst"
-        print "---\t --------\t  ---------\t  -------------\t    ---------\n"
+        print("NAV\t ValueAvg\t  SharedOwn\t  SharedBrought\t    CurrInvst")
+        print("---\t --------\t  ---------\t  -------------\t    ---------\n")
     def __printRow(self,nav,valAvg,shareOwn,shareBro,currInvst):
         """
         Internal function to print each row of VIP
         """
-        print "%.2f\t %.2f\t  %.2f  %16.2f\t  %10.2f\n"%\
-              (nav,valAvg,shareOwn,shareBro,currInvst)
+        print("%.2f\t %.2f\t  %.2f  %16.2f\t  %10.2f\n"%\
+              (nav,valAvg,shareOwn,shareBro,currInvst))
 
     def __printSummary(self,instCount,shareOwn,totalInvst):
         """
         Function to print summary of the investment.
         """
-        print "Installment Count: %20d\n"\
+        print("Installment Count: %20d\n"\
               "Total Share Owned: %20.2f\n" \
               "Total Investment: %23.2f\n"\
               "Average Cost per share: %13.2f"\
-              %(instCount,shareOwn,totalInvst,totalInvst/shareOwn)
+              %(instCount,shareOwn,totalInvst,totalInvst/shareOwn))
 
     def findRet(self):
         """
@@ -112,7 +112,7 @@ class vipInvestment:
 
       
 def show_help():
-    print "\nThis is a VIP calculator.\n"\
+    print("\nThis is a VIP calculator.\n"\
           "Usage: %s [Option1]...[OptionsN]  <NAV filename>\n\n"\
           "<NAV filename>\n"\
           "        Specify a text file which contains list of NAV as follows...\n"\
@@ -130,7 +130,7 @@ def show_help():
           "        The percentage(%%) of value expected on investment.\n"\
           " -m = --installmentCount <count>\n"\
           "        The installment count, the investment needs to be continued.\n"\
-          %(sys.argv[0])
+          %(sys.argv[0]))
  
 def main():
     # parse command line options
@@ -146,8 +146,8 @@ def main():
                                        'expectedReturn=',
                                        'installmentCount=',
                                        'help'])
-    except getopt.error, msg:
-        print "ERROR: %s"%(msg)
+    except getopt.error as msg:
+        print ("ERROR: %s"%(msg))
         show_help()
         sys.exit(1)
 
@@ -169,19 +169,19 @@ def main():
             show_help()
             sys.exit(0)
         elif opt in ("-i","--initialInvestment"):
-            optionDict['initialInvestment'] = string.atoi(optarg)
+            optionDict['initialInvestment'] = int(optarg)
 
         elif opt in ("-n","--minInvestment"):
-            optionDict['minInvestment'] = string.atoi(optarg)
+            optionDict['minInvestment'] = int(optarg)
 
         elif opt in ("-a","--maxInvestment"):
-            optionDict['maxInvestment'] = string.atoi(optarg)
+            optionDict['maxInvestment'] = int(optarg)
 
         elif opt in ("-e","--expectedReturn"):
-            optionDict['expectedReturn'] = string.atoi(optarg)
+            optionDict['expectedReturn'] = int(optarg)
 
         elif opt in ("-m","--installmentCount"):
-            optionDict['installmentCount'] = string.atoi(optarg)
+            optionDict['installmentCount'] = int(optarg)
 
         else:
             #switch statment using lambda
